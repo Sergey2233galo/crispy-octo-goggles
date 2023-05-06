@@ -1,0 +1,154 @@
+1.Входим в шелл 
+python manage.py shell
+
+2.Импортируем модели
+from news.models import *
+
+3.Создаем двух пользователей.
+user_1 = User.objects.create_user("Sergey")
+user_2 = User.objects.create_user("Pavel")
+
+4.Создать два объекта модели Author, связанные с User'ми.
+Author.objects.create(author=user_1)
+Author.objects.create(author=user_2)
+
+5.Добавить 4 категории в Category.
+Category.objects.create(name='Football')
+Category.objects.create(name='Basketball')
+Category.objects.create(name='Auto')       
+Category.objects.create(name='Tennis')
+
+6.Добавить 2 статьи и 1 новость.
+author_1 = Author.objects.get(id=1)
+
+ Post.objects.create(author=author_1, category_type='AR', title='Надаль на грунте – зверь, которых в истории еще не было. Демонстрируем цифрами.',text='У Рафы очень приличный процент выигранных турниров и на харде, и на траве, но на грунте – вообще запредельный.Всего это вылилось в 63 титула – больше всех в истории на глине. С серьезным отрывом.На других покрытиях то
+лько два человека выиграли больше трофеев, чем Рафа на глине. Но нужно учитывать, что грунт составляет всего около 30% календаря, а харда в два раза больше.')
+
+ Post.objects.create(author=author_1, category_type='AR', title='Самые высокооплачиваемые спортсмены мира: Роналду – лидер, позади Месси, Мбаппе и Леброн', text='Криштиану Роналду взобрался на вершину рейтинга впервые с 2017 года. 136 миллионов 
+долларов – рекордный годовой доход для футболиста по версии Forbes.Лионель Месси в прошлом году был первым, а сейчас спустился на второе место. Хотя у Лео все схвачено – один только контракт с блокчейн-платформой Socios приносит аргентинцу 20 млн долларов в год.Килиан Мбаппе ворвался в рейтинг. Килиан больше всех заработал в футболе, а еще он единственный в топ-10, кому
+ не исполнилось 30 лет (ему всего лишь 24 года).За бокс отдувается Канело Альварес, за год подравшийся с Геннадием Головкиным и Дмитрием Биволом. За теннис – Роджер Федерер. Забавно, но 0,1 спортивных миллиона долларов у швейцарца – это гонорар за прощальный Кубок Лэйвера, который сам Федерер и организовал.')
+
+author_2 = Author.objects.get(id=2)
+>>> Post.objects.create(author=author_2, category_type='NW', title='Брэду Питту строят свой болид и пустят на Гран-при – для
+ фильма об «Ф-1». Хэмилтон – продюссер и консультант сценария.',text='Медиамашина «Формулы-1» все разгоняется: вслед за доку
+менталкой на Netflix, выставкой, собственным Гран-при в Вегасе и бесплатными трансляциями для американской публики на EPSN с
+ерия теперь участвует в производстве голливудского фильма для Apple+. В продюсерах – семикратный чемпион мира Льюис Хэмилтон
+ и Джерри Брукхаймер («Пираты Карибского Моря», «Плохие Парни», «Армагеддон»), режиссер – автор «Топ Ган: Маверик» Джозеф Косински, главная роль – у Брэда Питта.')
+
+7.Присвоить им категории (как минимум к одной статье или новости должно быть не менее 2 категорийю
+
+Post.objects.get(id=1).post_category.add(Category.objects.get(id=4))
+Post.objects.get(id=2).post_category.add(Category.objects.get(id=1))
+ Post.objects.get(id=2).post_category.add(Category.objects.get(id=4))
+Post.objects.get(id=3).post_category.add(Category.objects.get(id=3))
+
+8.Создать как минимум 4 комментария к разным объектам модели Post, в каждом нужен как минимум 1 комментарий.
+
+ Comment.objects.create(comment_post=Post.objects.get(id=1),comment_user=User.objects.get(id=3),text='Рафа просто лучший.')
+Comment.objects.create(comment_post=Post.objects.get(id=2),comment_user=User.objects.get(id=3),text='Роналду просто лучший.') 
+Comment.objects.create(comment_post=Post.objects.get(id=3),comment_user=User.objects.get(id=3),text='Питт просто лучший.')
+
+ Comment.objects.create(comment_post=Post.objects.get(id=1),comment_user=User.objects.get(id=4),text='Отличная статья.') 
+Comment.objects.create(comment_post=Post.objects.get(id=2),comment_user=User.objects.get(id=4),text='Просто отличная статья.') 
+Comment.objects.create(comment_post=Post.objects.get(id=3),comment_user=User.objects.get(id=4),text='Отличная новость.Жду фильм.')
+
+ Comment.objects.create(comment_post=Post.objects.get(id=3),comment_user=User.objects.get(id=1),text='Хорошая новость, надеюсь фильм выйдет интересный.') 
+Comment.objects.create(comment_post=Post.objects.get(id=1),comment_user=User.objects.get(id=2),text='Здоровья Надалю.')     
+Comment.objects.create(comment_post=Post.objects.get(id=2),comment_user=User.objects.get(id=2),text='Хорошая аналитика.')
+
+9. Примените функции like и dislike к постам.
+
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=1).like() 
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).dislike() 
+Post.objects.get(id=2).dislike() 
+Post.objects.get(id=2).dislike()
+Post.objects.get(id=2).like() 
+
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=2).dislike() 
+Comment.objects.get(id=2).dislike()
+Comment.objects.get(id=2).dislike()
+Comment.objects.get(id=9).dislike() 
+Comment.objects.get(id=8).like()  
+
+10. Обновите рейтинги пользователей.
+
+ author_1.update_rating()
+ author_2.update_rating()
+
+11.Вывести username и рейтинг лучшего автора.
+
+>>> best_rank_author = Author.objects.order_by('-rating')[0]
+>>> best_rank_author                                        
+<Author: Author object (2)>
+>>> best_rank_author.rating
+9
+>>> best_rank_author.author.username
+'Pasha'
+
+12. Вывести дату добавления, автора, заголовок и превья лучшей статьи.
+
+ best_rank_post = Post.objects.order_by('-rating')[0]
+
+>>> best_rank_post.date_creation
+datetime.datetime(2023, 5, 6, 1, 53, 50, 455966, tzinfo=datetime.timezone.utc)
+>>> best_rank_post.author.author.username
+'Pasha'
+>>> best_rank_post.rating                
+3
+>>> best_rank_post.title 
+'Брэду Питту строят свой болид и пустят на Гран-при – дляфильма об «Ф-1». Хэмилтон – продюссер и консультант сценария.'     
+>>> best_rank_post.preview()
+' Медиамашина «Формулы-1» все разгоняется: вслед за документалкой на Netflix, выставкой, собственным Гран-при в Вегасе и беспл... '
+
+13. Вывести все комментарии (дата, пользователь,рейтинг,текст) к этой статье.
+
+all_comments = Comment.objects.all().filter(comment_post=best_rank_post) 
+
+>>> len(all_comments) 
+3
+>>> all_comments[0].date_creation
+datetime.datetime(2023, 5, 6, 2, 7, 2, 249400, tzinfo=datetime.timezone.utc)
+>>> all_comments[0].comment_user.username
+'Mihail'
+>>> all_comments[0].rating
+0
+>>> all_comments[0].text                 
+'Питт просто лучший.'
+
+>>> all_comments[1].date_creation         
+datetime.datetime(2023, 5, 6, 2, 7, 34, 168708, tzinfo=datetime.timezone.utc)
+>>> all_comments[1].comment_user.username 
+'Oleg'
+>>> all_comments[1].rating                
+4
+>>> all_comments[1].text                  
+'Отличная новость.Жду фильм.'
+
+>>> all_comments[2].date_creation         
+datetime.datetime(2023, 5, 6, 2, 7, 45, 172981, tzinfo=datetime.timezone.utc)
+>>> all_comments[2].comment_user.username 
+'Sergey'
+>>> all_comments[2].rating                
+0
+>>> all_comments[2].text                  
+'Хорошая новость, надеюсь фильм выйдет интересный.'
+
+quit()
+
+
+
+   
+
+
+
+
+
+
